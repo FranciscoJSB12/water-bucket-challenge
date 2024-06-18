@@ -12,7 +12,7 @@ const envsSchema = joi.object({
 
 const { error, value } = envsSchema.validate(process.env);
 
-if (error) throw new Error(`Config validation error: ${error.message}`);
+if (error) throw new Error(`Make sure all environment variables are set up: ${error.message}`);
 
 const envVars: EnvVars = value;
 
