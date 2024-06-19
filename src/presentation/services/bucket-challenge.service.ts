@@ -8,11 +8,11 @@ export class BucketChallengeService {
     let largestBucketData = {} as Bucket;
 
     if (smallestNumber === bucketX) {
-      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'x' };
-      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'y' };
+      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'X' };
+      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'Y' };
     } else {
-      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'y' };
-      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'x' };
+      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'Y' };
+      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'X' };
     }
 
     return { 
@@ -114,7 +114,7 @@ export class BucketChallengeService {
           {
             smallestBucketCount,
             largestBucketCount,
-            explanation: 'Transfer smallest to largest'
+            explanation: 'Transfer from largest to smallest'
           }
         );
       }
@@ -147,17 +147,28 @@ export class BucketChallengeService {
   private indentifyExplanation(results: BucketChallengeSolution[], bucketXValue: number, bucketYValue: number) {
     const { smallestBucketData, largestBucketData } = this.detemineLargestSmallestNumbers(bucketXValue, bucketYValue);
 
-    return results.map(result => ({
+    const partialResult = results.map(result => ({
       smallestBucketCount: {
+        bucket: `bucket${smallestBucketData.bucket}`,
         count: result.smallestBucketCount,
-        bucket: smallestBucketData.bucket
       },
       largestBucketCount: {
+        bucket: `bucket${largestBucketData.bucket}`,
         count: result.largestBucketCount,
-        bucket: largestBucketData.bucket,
       },
-      explanation: result.explanation.replace(smallestBucketData.name, `bucket ${smallestBucketData.bucket}`).replace(largestBucketData.name, `bucket ${largestBucketData.bucket}`),
+      action: {
+        name: 'explanation',
+        value: result.explanation.replace(smallestBucketData.name, `bucket ${smallestBucketData.bucket}`).replace(largestBucketData.name, `bucket ${largestBucketData.bucket}`)
+      },
     }));
+
+    return partialResult.map(result => (
+      {
+        [result.smallestBucketCount.bucket]: result.smallestBucketCount.count,
+        [result.largestBucketCount.bucket]: result.largestBucketCount.count,
+        [result.action.name]: result.action.value,
+      }
+    ));
   }
 
   public executeCalculation(challengeData: CalculateChallengeDto) {
@@ -169,8 +180,8 @@ export class BucketChallengeService {
 
     const solution = this.determineMostEfficientSolution(challengeData);
 
-    console.log(this.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY));
+    const finalSolution = this.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY);
 
-    return { isSolutionPosible, results:  solution}
+    return { isSolutionPosible, results: finalSolution };
     }
 }
