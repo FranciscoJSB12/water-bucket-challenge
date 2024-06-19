@@ -126,7 +126,7 @@ export class BucketChallengeService {
   private determineMostEfficientSolution(challengeData: CalculateChallengeDto) {
     const { largestNumber, smallestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
 
-    const firstPosibleSolutionCount = (challengeData.amountWantedZ / smallestNumber) * 2;
+    const firstPosibleSolutionCount = challengeData.amountWantedZ !== smallestNumber ? (challengeData.amountWantedZ / smallestNumber) * 2 : 1;
     const secondPosibleSolutionCount = ((largestNumber - challengeData.amountWantedZ) / smallestNumber) * 2 || 1;
 
     const resultsUsingSmallestBucket = this.iterateWithSmallestBucket(firstPosibleSolutionCount, smallestNumber, largestNumber);
