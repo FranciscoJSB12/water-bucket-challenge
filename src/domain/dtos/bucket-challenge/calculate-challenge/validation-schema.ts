@@ -8,9 +8,9 @@ interface CalculationData {
 
 export const validateSchema = (data: CalculationData): CalculationData | Error => {
     const validationSchema = joi.object({
-        bucketX: joi.number().min(1).required(),
-        bucketY: joi.number().min(1).required(),
-        amountWantedZ: joi.number().min(1).required(),
+        bucketX: joi.number().integer().min(1).required(),
+        bucketY: joi.number().integer().min(1).required(),
+        amountWantedZ: joi.number().integer().min(1).required(),
     });
     
     const { error, value } = validationSchema.validate(data, { abortEarly: false });

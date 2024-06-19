@@ -13,6 +13,6 @@ export class BucketChallengeController {
 
     if (error) return res.status(400).json({ ok: false, message: error });
 
-    res.json(this.bucketChallengeService.executeCalculation(challengeData));
+    res.status(200).json(this.bucketChallengeService.executeCalculation(challengeData!));
   };
 } 
