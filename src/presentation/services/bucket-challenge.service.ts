@@ -1,159 +1,176 @@
-import { CalculateChallengeDto, BestPosibleSolutionType, BucketChallengeSolutionType } from "../../domain";
-
-//BucketX = 2, BucketY = 10 and AmountWantedZ = 4
+import { CalculateChallengeDto, BucketChallengeSolution, Bucket } from "../../domain";
 
 export class BucketChallengeService {
-
   private detemineLargestSmallestNumbers(bucketX: number, bucketY: number) {
     const largestNumber = Math.max(bucketX, bucketY);
     const smallestNumber = Math.min(bucketX, bucketY);
-    
-    return {
-      largestNumber,
-      smallestNumber,
+    let smallestBucketData = {} as Bucket;
+    let largestBucketData = {} as Bucket;
+
+    if (smallestNumber === bucketX) {
+      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'x' };
+      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'y' };
+    } else {
+      smallestBucketData = { name: 'smallest', value: smallestNumber, bucket: 'y' };
+      largestBucketData = { name: 'largest', value: largestNumber, bucket: 'x' };
     }
+
+    return { 
+      largestNumber, 
+      smallestNumber,
+      smallestBucketData,
+      largestBucketData,
+    };
   }
 
   private determineSolutionPosible(challengeData: CalculateChallengeDto) {
     const bucketXModulus = challengeData.amountWantedZ % challengeData.bucketX;
     const bucketYModulus = challengeData.amountWantedZ % challengeData.bucketY;
+
     const { largestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
+
     const isSolutionPosible = ((bucketXModulus === 0) || (bucketYModulus === 0)) && largestNumber >= challengeData.amountWantedZ; 
 
-    return {
-      isSolutionPosible
+    return { isSolutionPosible };
+  }
+
+  private iterateWithSmallestBucket(count: number, smallestNumber: number, largestNumber: number) {
+    let smallestBucketCount: number = 0;
+    let largestBucketCount: number = 0;
+    const resultsUsingSmallestBucket: BucketChallengeSolution[] = [];
+
+    for(let i = 1; i <= count; i++) {
+      if (smallestBucketCount === 0) { 
+        smallestBucketCount += smallestNumber;
+        resultsUsingSmallestBucket.push(
+          { 
+            smallestBucketCount, 
+            largestBucketCount, 
+            explanation: 'Fill smallest'
+          }
+        );
+        continue;
+      };
+
+      if (smallestBucketCount === smallestNumber && largestBucketCount < largestNumber) {
+        smallestBucketCount -= smallestNumber;
+        largestBucketCount += smallestNumber;
+        resultsUsingSmallestBucket.push(
+          { 
+            smallestBucketCount, 
+            largestBucketCount, 
+            explanation: 'Transfer from smallest to largest'
+          }
+        );
+      }
     }
+
+    return resultsUsingSmallestBucket;
+  }
+
+  private iterateWithLargestBucket(count: number, smallestNumber: number, largestNumber: number) {
+    let smallestBucketCount: number = 0;
+    let largestBucketCount: number = 0;
+    const resultsUsingLargestBucket: BucketChallengeSolution[] = [];
+
+    for(let j = 1; j <= count; j++) {
+      if (largestBucketCount === 0) {
+        largestBucketCount += largestNumber;
+        resultsUsingLargestBucket.push(
+          { 
+            smallestBucketCount, 
+            largestBucketCount, 
+            explanation: 'Fill largest'
+          }
+        );
+        continue;
+      }
+
+      if (largestBucketCount === largestNumber) {
+        largestBucketCount -= smallestNumber;
+        smallestBucketCount += smallestNumber;
+        resultsUsingLargestBucket.push({
+          smallestBucketCount,
+          largestBucketCount,
+          explanation: 'Transfer from largest to smallest'
+        });
+        continue;
+      }
+
+      if (smallestBucketCount === smallestNumber) {
+        smallestBucketCount -= smallestNumber;
+        resultsUsingLargestBucket.push({ 
+          smallestBucketCount,
+          largestBucketCount,
+          explanation: 'Empty smallest'
+        });
+        continue;
+      }
+
+      if (smallestBucketCount === 0) {
+        smallestBucketCount += smallestNumber;
+        largestBucketCount -= smallestNumber;
+        resultsUsingLargestBucket.push(
+          {
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: 'Transfer smallest to largest'
+          }
+        );
+      }
+    }
+
+    return resultsUsingLargestBucket;
   }
 
   private determineMostEfficientSolution(challengeData: CalculateChallengeDto) {
     const { largestNumber, smallestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
 
-    const firstPosibleSolution = { 
-      count: challengeData.amountWantedZ / smallestNumber,
-      smallestNumber,
-    };
+    const firstPosibleSolutionCount = (challengeData.amountWantedZ / smallestNumber) * 2;
+    const secondPosibleSolutionCount = ((largestNumber - challengeData.amountWantedZ) / smallestNumber) * 2 || 1;
 
-    const secondPosibleSolution = {
-      count: (largestNumber - challengeData.amountWantedZ) / smallestNumber,
-      smallestNumber,
-      largestNumber,
-    };
+    const resultsUsingSmallestBucket = this.iterateWithSmallestBucket(firstPosibleSolutionCount, smallestNumber, largestNumber);
 
-    let bestPossibleSolution = {} as BestPosibleSolutionType;
+    const resultsUsingLargestBucket = this.iterateWithLargestBucket(secondPosibleSolutionCount, smallestNumber, largestNumber);
 
-    if (firstPosibleSolution.count < secondPosibleSolution.count) {
-      bestPossibleSolution = { ...firstPosibleSolution };
-    } else {
-      bestPossibleSolution = { ...secondPosibleSolution };
+    if (resultsUsingSmallestBucket.length < resultsUsingLargestBucket.length) {
+      return {
+        result: resultsUsingSmallestBucket,
+      }
     }
 
     return {
-      firstPosibleSolution,
-      secondPosibleSolution,
-      bestPossibleSolution,
+      result: resultsUsingLargestBucket,
     }
+  }
+
+  private indentifyExplanation(results: BucketChallengeSolution[], bucketXValue: number, bucketYValue: number) {
+    const { smallestBucketData, largestBucketData } = this.detemineLargestSmallestNumbers(bucketXValue, bucketYValue);
+
+    return results.map(result => ({
+      smallestBucketCount: {
+        count: result.smallestBucketCount,
+        bucket: smallestBucketData.bucket
+      },
+      largestBucketCount: {
+        count: result.largestBucketCount,
+        bucket: largestBucketData.bucket,
+      },
+      explanation: result.explanation.replace(smallestBucketData.name, `bucket ${smallestBucketData.bucket}`).replace(largestBucketData.name, `bucket ${largestBucketData.bucket}`),
+    }));
   }
 
   public executeCalculation(challengeData: CalculateChallengeDto) {
     const { isSolutionPosible } = this.determineSolutionPosible(challengeData);
 
     if (!isSolutionPosible) {
-      return {
-        isSolutionPosible
-      }
+      return { isSolutionPosible, results: [] }
     }
 
-    const { bestPossibleSolution } = this.determineMostEfficientSolution(challengeData);
-    
-    const bucketX = {
-      value: challengeData.bucketX,
-      isSmallest: bestPossibleSolution.smallestNumber === challengeData.bucketX,
-    }
+    const solution = this.determineMostEfficientSolution(challengeData);
 
-    const bucketY = {
-      value: challengeData.bucketY,
-      isSmallest: bestPossibleSolution.smallestNumber === challengeData.bucketY,
-    }
+    console.log(this.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY));
 
-    let initialBucket = {} as { value: number, isSmallest: boolean };
-    let bucketXCount: number = 0;
-    let bucketYCount: number = 0;
-    const results: BucketChallengeSolutionType[] = [];
-
-    for(let i = 1; i <= bestPossibleSolution.count * 2; i++) {
-      if (!bestPossibleSolution.largestNumber){
-        
-        //initialBucket = bucketX.isSmallest ? { ...bucketX } : { ...bucketY };
-        
-        if (bucketXCount === 0) { 
-          bucketXCount += bucketX.value;
-          results.push({ 
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Fill bucket X'
-          });
-          continue;
-        };
-
-        if (bucketXCount === bucketX.value) {
-          bucketXCount -= bucketX.value;
-          bucketYCount += bucketX.value;
-          results.push({ 
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Transfer from bucket x to bucket y'
-          });
-          continue;
-        }
-
-      } else {
-        //initialBucket = !bucketX.isSmallest ? { ...bucketX } : { ...bucketY };
-        if (bucketYCount === 0) {
-          bucketYCount += bucketY.value;
-          results.push({ 
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Fill bucket y'
-          });
-          continue;
-        }
-
-        if (bucketYCount === bucketY.value) {
-          bucketYCount -= bucketX.value;
-          bucketXCount += bucketX.value;
-          results.push({
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Transfer from bucket y to bucket x'
-          });
-          continue;
-        }
-
-        if (bucketXCount === bucketX.value) {
-          bucketXCount -= bucketX.value;
-          results.push({ 
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Empty bucket x'
-          });
-          continue;
-        }
-
-        if (bucketXCount === 0) {
-          bucketXCount += bucketX.value;
-          bucketYCount -= bucketX.value;
-          results.push({
-            bucketX: bucketXCount, 
-            bucketY: bucketYCount, 
-            explanation: 'Transfer from bucket y to bucket x'
-          });
-          continue;
-        }
-      }      
-    }
-
-    return {
-      results,
-    };
+    return { isSolutionPosible, results:  solution}
     }
 }

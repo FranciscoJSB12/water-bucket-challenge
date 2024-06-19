@@ -1,5 +1,5 @@
-export interface BucketChallengeSolutionType { 
-    bucketX: number; 
-    bucketY: number; 
+export interface BucketChallengeSolution { 
+    smallestBucketCount: number;
+    largestBucketCount: number;
     explanation: string;
 }
