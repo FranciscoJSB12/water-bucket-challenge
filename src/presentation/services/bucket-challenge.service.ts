@@ -1,5 +1,5 @@
 export class BucketChallengeService {
-  public executeCalculation() {  
-    return { status: 'ok', data: 'this is the place for the data and calculation (TODO)' }
+  public executeCalculation(body: any) {  
+    return { status: 'ok', data: body }
   }
 }

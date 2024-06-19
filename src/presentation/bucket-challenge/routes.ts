@@ -8,7 +8,7 @@ export class BucketChallengeRoutes {
 
     const bucketChallengeController = new BucketChallengeController();
 
-    router.get('/', bucketChallengeController.getBucketChallengeData);
+    router.post('/', bucketChallengeController.getBucketChallengeData);
 
     return router;
   }
