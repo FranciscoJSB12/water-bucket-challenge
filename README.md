@@ -40,5 +40,31 @@ If you decide to start with the smallest one:
 
 steps = (amountWanted / smallestBucketCapacity) * 2
 
-This gives you the number of times to fill the bucket. However, you need to multiply this number by 2 because every time you fill it, you'll need to empty or transfer the water, unless you achieve the desired amount on your first attempt.
+This gives you the number of times to fill the bucket. However, you need to multiply this number by 2 because every time you fill it, you'll need to empty or transfer the water, unless you achieve the desired amount on your first attempt because the amount wanted and the smallest bucket capacity are equal.
 ```
+
+```
+Regarding the largest bucket:
+
+steps = [(largestBucketCapacity - amountWanted)/ smallestBucketCapacity] * 2
+
+This formula calculates the steps involved when you start by filling the largest bucket until you reach the desired amount. Remember, the bucket can only be filled or emptied completely. The water can be transferred to the smallest bucket as well. This is why the capacity of the smallest bucket is a factor in determining the steps for the larger one. You also have to multiply by 2 because every time you fill one of the buckets you need to empty or transfer the water to the other, unless the largest bucket's capacity is equal to the desired amount, then you will only need one attempt.
+```
+
+3. After calculating the number of steps for each scenario, compare them to see which one requires less. At this point the game starts, which is a loop and finishes when you reached the desired amount.
+
+## How to run the project
+
+### Development Mode
+
+1. Clone the github repository.
+2. Install all the dependency using `npm install`.
+3. Copy and rename the `.env.template` file to `.env` and fill the environment variables.
+4. Run `npm run dev` to start the server.
+5. Open your favorite browser and type:
+
+```
+localhost:PORT/
+```
+
+6. Since you previously set the port in the `.env` file, that's the number you need to enter in the PORT field.
