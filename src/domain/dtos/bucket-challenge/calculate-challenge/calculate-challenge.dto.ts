@@ -22,6 +22,6 @@ export class CalculateChallengeDto {
         ] 
       };
       
-      return [undefined, new CalculateChallengeDto(bucketX, bucketY, amountWantedZ)];
+      return [undefined, new CalculateChallengeDto(+bucketX, +bucketY, +amountWantedZ)];
     }
 }

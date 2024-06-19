@@ -1,4 +1,4 @@
-import { CalculateChallengeDto, BestPosibleSolutionType } from "../../domain";
+import { CalculateChallengeDto, BestPosibleSolutionType, BucketChallengeSolutionType } from "../../domain";
 
 //BucketX = 2, BucketY = 10 and AmountWantedZ = 4
 
@@ -64,7 +64,96 @@ export class BucketChallengeService {
     }
 
     const { bestPossibleSolution } = this.determineMostEfficientSolution(challengeData);
+    
+    const bucketX = {
+      value: challengeData.bucketX,
+      isSmallest: bestPossibleSolution.smallestNumber === challengeData.bucketX,
+    }
 
-    return bestPossibleSolution;
+    const bucketY = {
+      value: challengeData.bucketY,
+      isSmallest: bestPossibleSolution.smallestNumber === challengeData.bucketY,
+    }
+
+    let initialBucket = {} as { value: number, isSmallest: boolean };
+    let bucketXCount: number = 0;
+    let bucketYCount: number = 0;
+    const results: BucketChallengeSolutionType[] = [];
+
+    for(let i = 1; i <= bestPossibleSolution.count * 2; i++) {
+      if (!bestPossibleSolution.largestNumber){
+        
+        //initialBucket = bucketX.isSmallest ? { ...bucketX } : { ...bucketY };
+        
+        if (bucketXCount === 0) { 
+          bucketXCount += bucketX.value;
+          results.push({ 
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Fill bucket X'
+          });
+          continue;
+        };
+
+        if (bucketXCount === bucketX.value) {
+          bucketXCount -= bucketX.value;
+          bucketYCount += bucketX.value;
+          results.push({ 
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Transfer from bucket x to bucket y'
+          });
+          continue;
+        }
+
+      } else {
+        //initialBucket = !bucketX.isSmallest ? { ...bucketX } : { ...bucketY };
+        if (bucketYCount === 0) {
+          bucketYCount += bucketY.value;
+          results.push({ 
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Fill bucket y'
+          });
+          continue;
+        }
+
+        if (bucketYCount === bucketY.value) {
+          bucketYCount -= bucketX.value;
+          bucketXCount += bucketX.value;
+          results.push({
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Transfer from bucket y to bucket x'
+          });
+          continue;
+        }
+
+        if (bucketXCount === bucketX.value) {
+          bucketXCount -= bucketX.value;
+          results.push({ 
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Empty bucket x'
+          });
+          continue;
+        }
+
+        if (bucketXCount === 0) {
+          bucketXCount += bucketX.value;
+          bucketYCount -= bucketX.value;
+          results.push({
+            bucketX: bucketXCount, 
+            bucketY: bucketYCount, 
+            explanation: 'Transfer from bucket y to bucket x'
+          });
+          continue;
+        }
+      }      
+    }
+
+    return {
+      results,
+    };
     }
 }
