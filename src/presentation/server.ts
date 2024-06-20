@@ -1,4 +1,6 @@
+import path from 'path';
 import express, { Router } from 'express';
+import cors from 'cors';
 
 interface Options {
   port: number;
@@ -21,8 +23,15 @@ export class Server {
     
     this.app.use( express.json() );
     this.app.use( express.urlencoded({ extended: true }) );
+    this.app.use(cors());
+    this.app.use(express.static('public'));
 
     this.app.use(this.routes);
+
+    this.app.get('*', (req, res) => {
+      const indexPath = path.join( __dirname + `../../../public/index.html` );
+      res.sendFile(indexPath);
+    });
 
     this.app.listen(this.port, () => {
       console.log(`Server running on port ${ this.port }`);

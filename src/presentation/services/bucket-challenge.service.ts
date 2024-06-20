@@ -29,9 +29,9 @@ export class BucketChallengeService {
 
     const { largestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
 
-    const isSolutionPosible = ((bucketXModulus === 0) || (bucketYModulus === 0)) && largestNumber >= challengeData.amountWantedZ; 
+    const isSolutionPossible = ((bucketXModulus === 0) || (bucketYModulus === 0)) && largestNumber >= challengeData.amountWantedZ; 
 
-    return { isSolutionPosible };
+    return { isSolutionPossible };
   }
 
   private iterateWithSmallestBucket(count: number, smallestNumber: number, largestNumber: number) {
@@ -134,7 +134,6 @@ export class BucketChallengeService {
 
       return {
         result: resultsUsingSmallestBucket,
-        areSolutionsEqualToEachOther: firstPosibleSolutionCount === secondPosibleSolutionCount,
       }
     }
 
@@ -173,16 +172,16 @@ export class BucketChallengeService {
   }
 
   public executeCalculation(challengeData: CalculateChallengeDto) {
-    const { isSolutionPosible } = this.determineSolutionPosible(challengeData);
+    const { isSolutionPossible } = this.determineSolutionPosible(challengeData);
 
-    if (!isSolutionPosible) {
-      return { isSolutionPosible, results: [] }
+    if (!isSolutionPossible) {
+      return { isSolutionPossible, results: [] }
     }
 
     const solution = this.determineMostEfficientSolution(challengeData);
 
     const finalSolution = this.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY);
 
-    return { isSolutionPosible, results: finalSolution };
+    return { isSolutionPossible, results: finalSolution };
     }
 }
