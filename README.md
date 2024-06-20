@@ -67,8 +67,8 @@ localhost:PORT/
 7. After that you should see an UI that looks like this:
 
 <p align="center">
-    <img src="https://i.imgur.com/I1IvxMW.png" width="300" height="500" title="Bucket icon by surang - Flaticon">
-    <img src="https://i.imgur.com/SR3FRub.png" width="300" height="500" title="Bucket icon by surang - Flaticon">
+    <img src="https://i.imgur.com/I1IvxMW.png" width="300" height="500" title="Application UI">
+    <img src="https://i.imgur.com/SR3FRub.png" width="300" height="500" title="Application UI with solution">
 </p>
 
 ## Frontend's Github Repository
