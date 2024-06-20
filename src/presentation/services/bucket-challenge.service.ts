@@ -1,22 +1,12 @@
 import { CalculateChallengeDto } from "../../domain";
-import { DataAnalyzer, DataShipper } from "../helpers";
+import { DataReceiver } from "../helpers/bucket-challenge-best-solution/dataReceiver.helper";
+
 
 export class BucketChallengeService {
   
-  private dataAnalyzer = new DataAnalyzer();
-  private dataShipper = new DataShipper();
+  private readonly dataReceiver = new DataReceiver();
 
-  public executeCalculation(challengeData: CalculateChallengeDto) {
-    const { isSolutionPossible } = this.dataAnalyzer.determineSolutionPosible(challengeData);
-
-    if (!isSolutionPossible) {
-      return { ok: true, isSolutionPossible, results: [] }
-    }
-
-    const solution = this.dataShipper.determineMostEfficientSolution(challengeData);
-
-    const finalSolution = this.dataShipper.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY);
-
-    return { ok: true ,isSolutionPossible, results: finalSolution };
-    }
+  public executeCalculation (challengeData: CalculateChallengeDto) {
+    return this.dataReceiver.obtainData(challengeData);
+  }
 }
