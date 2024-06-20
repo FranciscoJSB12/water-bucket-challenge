@@ -73,8 +73,8 @@ localhost:PORT/
 
 ## Frontend's Github Repository
 
-The frontend and backend code are decoupled in this project in order to have a better organization, so you will find just one html, css and javascript file in the public folder.
+To achieve better organization, this project employs a decoupled frontend and backend architecture. Consequently, the public folder only contains a single HTML, CSS, and JavaScript file: these ones are already optimized for production.
 
-Check the Fronted Source Code here:
+If you need the source code, check the link below:
 
-<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui" target="_blank">Source Code</a>
+<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui" target="_blank">GiHub Repository - Source Code</a>

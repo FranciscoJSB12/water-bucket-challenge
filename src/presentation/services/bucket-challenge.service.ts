@@ -11,7 +11,7 @@ export class BucketChallengeService {
     const { isSolutionPossible } = this.dataAnalyzer.determineSolutionPosible(challengeData);
 
     if (!isSolutionPossible) {
-      return { ok: false, isSolutionPossible, results: [] }
+      return { ok: true, isSolutionPossible, results: [] }
     }
 
     const solution = this.dataShipper.determineMostEfficientSolution(challengeData);
