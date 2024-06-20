@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { BucketChallengeController } from './controller';
+import { BucketChallengeController } from './bucket-challenge.controller';
 
 export class BucketChallengeRoutes {
   static get routes(): Router {

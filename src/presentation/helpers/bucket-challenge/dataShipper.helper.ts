@@ -1,6 +1,6 @@
 import { CalculateChallengeDto, BucketChallengeSolution } from "../../../domain";
-import { DataAnalyzer } from "./dataAnalyzer";
-import { BucketLooper } from "./bucketLooper";
+import { DataAnalyzer } from "./dataAnalyzer.helper";
+import { BucketLooper } from "./bucketLooper.helper";
 
 export class DataShipper {
   

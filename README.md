@@ -54,7 +54,7 @@ steps = [(largestBucketCapacity - amountWanted)/ smallestBucketCapacity] * 2
 ### Development Mode
 
 1. Clone the github repository.
-2. Install all the dependency using `npm install`.
+2. Install all the dependencies using `npm install`.
 3. Copy and rename the `.env.template` file to `.env` and fill the environment variables.
 4. Run `npm run dev` to start the server.
 5. Open your favorite browser and type:
@@ -77,4 +77,4 @@ To achieve better organization, this project employs a decoupled frontend and ba
 
 If you need the source code, check the link below:
 
-<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui" target="_blank">GiHub Repository - Source Code</a>
+<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui/" target="_blank">GiHub Repository - Source Code</a>
