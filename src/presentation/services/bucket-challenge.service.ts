@@ -175,13 +175,13 @@ export class BucketChallengeService {
     const { isSolutionPossible } = this.determineSolutionPosible(challengeData);
 
     if (!isSolutionPossible) {
-      return { isSolutionPossible, results: [] }
+      return { ok: true, isSolutionPossible, results: [] }
     }
 
     const solution = this.determineMostEfficientSolution(challengeData);
 
     const finalSolution = this.indentifyExplanation(solution.result, challengeData.bucketX, challengeData.bucketY);
 
-    return { isSolutionPossible, results: finalSolution };
+    return { ok: true ,isSolutionPossible, results: finalSolution };
     }
 }
