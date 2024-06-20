@@ -5,17 +5,13 @@
 Welcome! This is an application created in order to solve the classic Water Jug Riddle. It is a web server built with Node.js that servers a Single Page Application as an user interface made with React.js.
 The server is able to received two jugs with different capacities (X gallons and Y gallons) and an amount wanted (Z gallons), so that you can get a response with the step-by-step solution.
 
-## Tecnologies
+## Technologies
 
 The project structure is inspired by the Nest.js framework, which uses a very well-organized folder structure. This not only makes the application easy to understand but also facilitates maintenance and scalability. The following technologies are part of the tech stack used in this project:
 
 - Node.js
 - Express.js
 - Typescript
-
-<p align="center">
-    <img src="https://i.imgur.com/hPSZR44.png" width="350" height="400" title="Bucket icon by surang - Flaticon">
-</p>
 
 ## Algorithmic Approach
 
@@ -39,17 +35,17 @@ In order to solve the Water Bucket Challenge, the proccess was divided into the 
 If you decide to start with the smallest one:
 
 steps = (amountWanted / smallestBucketCapacity) * 2
-
-This gives you the number of times to fill the bucket. However, you need to multiply this number by 2 because every time you fill it, you'll need to empty or transfer the water, unless you achieve the desired amount on your first attempt because the amount wanted and the smallest bucket capacity are equal.
 ```
+
+- This gives you the number of times to fill the bucket. However, you need to multiply this number by 2 because every time you fill it, you'll need to empty or transfer the water, unless you achieve the desired amount on your first attempt because the amount wanted and the smallest bucket capacity are equal.
 
 ```
 Regarding the largest bucket:
 
 steps = [(largestBucketCapacity - amountWanted)/ smallestBucketCapacity] * 2
-
-This formula calculates the steps involved when you start by filling the largest bucket until you reach the desired amount. Remember, the bucket can only be filled or emptied completely. The water can be transferred to the smallest bucket as well. This is why the capacity of the smallest bucket is a factor in determining the steps for the larger one. You also have to multiply by 2 because every time you fill one of the buckets you need to empty or transfer the water to the other, unless the largest bucket's capacity is equal to the desired amount, then you will only need one attempt.
 ```
+
+- This formula calculates the steps involved when you start by filling the largest bucket until you reach the desired amount. Remember, the bucket can only be filled or emptied completely. The water can be transferred to the smallest bucket as well. This is why the capacity of the smallest bucket is a factor in determining the steps for the larger one. You also have to multiply by 2 because every time you fill one of the buckets you need to empty or transfer the water to the other, unless the largest bucket's capacity is equal to the desired amount, then you will only need one attempt.
 
 3. After calculating the number of steps for each scenario, compare them to see which one requires less. At this point the game starts, which is a loop and finishes when you reached the desired amount.
 
@@ -68,3 +64,17 @@ localhost:PORT/
 ```
 
 6. Since you previously set the port in the `.env` file, that's the number you need to enter in the PORT field.
+7. After that you should see an UI that looks like this:
+
+<p align="center">
+    <img src="https://i.imgur.com/I1IvxMW.png" width="300" height="500" title="Bucket icon by surang - Flaticon">
+    <img src="https://i.imgur.com/SR3FRub.png" width="300" height="500" title="Bucket icon by surang - Flaticon">
+</p>
+
+## Frontend's Github Repository
+
+The frontend and backend code are decoupled in this project in order to have a better organization, so you will find just one html, css and javascript file in the public folder.
+
+Check the Fronted Source Code here:
+
+<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui" target="_blank">Source Code</a>
