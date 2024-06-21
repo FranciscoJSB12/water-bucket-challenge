@@ -5,6 +5,14 @@
 Welcome! This is an application created in order to solve the classic Water Jug Riddle. It is a web server built with Node.js that servers a Single Page Application as an user interface made with React.js.
 The server is able to received two jugs with different capacities (X gallons and Y gallons) and an amount wanted (Z gallons), so that you can get a response with the step-by-step solution.
 
+## Frontend's Github Repository
+
+To achieve better organization, this project employs a decoupled frontend and backend architecture. Consequently, the public folder only contains a single HTML, CSS, and JavaScript file: these ones are already optimized for production.
+
+If you need the source code, check the link below:
+
+<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui/" target="_blank">Frontend GiHub Repository - Source Code</a>
+
 ## Technologies
 
 The project structure is inspired by the Nest.js framework, which uses a very well-organized folder structure. This not only makes the application easy to understand but also facilitates maintenance and scalability. The following technologies are part of the tech stack used in this project:
@@ -71,10 +79,121 @@ localhost:PORT/
     <img src="https://i.imgur.com/SR3FRub.png" width="300" height="500" title="Application UI with solution">
 </p>
 
-## Frontend's Github Repository
+### Production Mode
 
-To achieve better organization, this project employs a decoupled frontend and backend architecture. Consequently, the public folder only contains a single HTML, CSS, and JavaScript file: these ones are already optimized for production.
+1. Clone the github repository.
+2. Install all the dependencies using `npm install`.
+3. Copy and rename the `.env.template` file to `.env` and fill the environment variables.
+4. Execute `npm run build`, this comands tests the app and then generates the final version.
+5. Run `npm start` and open your brower on `localhost:PORT/` to see the user interface.
 
-If you need the source code, check the link below:
+### API Documentation
 
-<a href="https://github.com/FranciscoJSB12/water-bucket-challenge-ui/" target="_blank">GiHub Repository - Source Code</a>
+The server also exposes an Enpoint to make POST requests on `http://localhost:PORT/api/bucket-challenge`
+You can send request with the following format:
+
+```
+{
+    "bucketX": integer,
+    "bucketY": integer,
+    "amountWantedZ": integer
+}
+```
+
+Only interger values greater than zero are allowed by the server.
+
+## How to test the project
+
+- Run tests without watching file changes:
+
+```
+npm run test
+```
+
+- Run test watching file changes:
+
+```
+npm run test:watch
+```
+
+- Generate coverage report:
+
+```
+npm run test:coverage
+```
+
+### Test Cases for validation
+
+Besides the test cases in the `dataReceiver.helper.test.ts` file you can copy and paste there the following ones inside the describe function:
+
+```
+  test('Forth case with BucketX=2 BucketY=3 AmountWanted=4', () => {
+
+    const bucketX = 2;
+    const bucketY = 3;
+    const amountWantedZ = 4;
+
+    const dataReceiver = new DataReceiver();
+
+    const result = dataReceiver.obtainData({ bucketX, bucketY, amountWantedZ });
+
+    //Expected Outcome
+    expect(result).toEqual({
+      ok: true,
+      isSolutionPossible: false,
+      results: [],
+    });
+  });
+```
+
+```
+  test('Fifth case with BucketX=5 BucketY=2 AmountWanted=2', () => {
+
+    const bucketX = 5;
+    const bucketY = 2;
+    const amountWantedZ = 2;
+
+    const dataReceiver = new DataReceiver();
+
+    const result = dataReceiver.obtainData({ bucketX, bucketY, amountWantedZ });
+
+    //Expected Outcome
+    expect(result).toEqual({
+      ok: true,
+      isSolutionPossible: true,
+      results: [
+        {
+          bucketX: 0,
+          bucketY: 2,
+          explanation: "Fill bucket Y"
+        },
+      ],
+    });
+  });
+```
+
+```
+  test('Fifth case with BucketX=1 BucketY=5 AmountWanted=5', () => {
+
+    const bucketX = 1;
+    const bucketY = 5;
+    const amountWantedZ = 5;
+
+    const dataReceiver = new DataReceiver();
+
+    const result = dataReceiver.obtainData({ bucketX, bucketY, amountWantedZ });
+
+    //Expected Outcome
+    expect(result).toEqual({
+      ok: true,
+      isSolutionPossible: true,
+      results: [
+        {
+          bucketX: 0,
+          bucketY: 5,
+          explanation: "Fill bucket Y"
+        },
+      ],
+    });
+  });
+```

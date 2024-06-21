@@ -1,5 +1,4 @@
 import { DataReceiver } from "../../../../src/presentation/helpers/bucket-challenge-best-solution/dataReceiver.helper";
-import { firstCase, secondCase } from "../../../../testdata/expectedResult";
 
 describe('Data-Receiver-helper', () => {
   test('First case with BucketX=2 BucketY=10 AmountWanted=4', () => {
@@ -8,7 +7,7 @@ describe('Data-Receiver-helper', () => {
     const bucketX = 2;
     const bucketY = 10;
     const amountWantedZ = 4;
-
+    
     //2. Act 
     const dataReceiver = new DataReceiver();
 
@@ -18,7 +17,28 @@ describe('Data-Receiver-helper', () => {
     expect(result).toEqual({
       ok: true,
       isSolutionPossible: true,
-      results: firstCase,
+      results: [
+        {
+            bucketX: 2,
+            bucketY: 0,
+            explanation: "Fill bucket X"
+        },
+        {
+            bucketX: 0,
+            bucketY: 2,
+            explanation: "Transfer from bucket X to bucket Y"
+        },
+        {
+            bucketX: 2,
+            bucketY: 2,
+            explanation: "Fill bucket X"
+        },
+        {
+            bucketX: 0,
+            bucketY: 4,
+            explanation: "Transfer from bucket X to bucket Y"
+        }
+      ],
     });
   });
 
@@ -37,7 +57,28 @@ describe('Data-Receiver-helper', () => {
     expect(result).toEqual({
       ok: true,
       isSolutionPossible: true,
-      results: secondCase,
+      results: [
+        {
+          bucketX: 0,
+          bucketY: 100,
+          explanation: "Fill bucket Y"
+        },
+        {
+          bucketX: 2,
+          bucketY: 98,
+          explanation: "Transfer from bucket Y to bucket X"
+        },
+        {
+          bucketX: 0,
+          bucketY: 98,
+          explanation: "Empty bucket X"
+        },
+        {
+          bucketX: 2,
+          bucketY: 96,
+          explanation: "Transfer from bucket Y to bucket X"
+        }
+      ],
     });
   });
 
