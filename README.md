@@ -89,8 +89,8 @@ localhost:PORT/
 
 ### API Documentation
 
-The server also exposes an Enpoint to make POST requests on `http://localhost:PORT/api/bucket-challenge`
-You can send request with the following format:
+The server also exposes an enpoint to make POST requests on `http://localhost:PORT/api/bucket-challenge`
+You can send requests with the following format:
 
 ```
 {
