@@ -35,9 +35,11 @@ export class DataAnalyzer {
         const bucketXModulus = challengeData.amountWantedZ % challengeData.bucketX;
         const bucketYModulus = challengeData.amountWantedZ % challengeData.bucketY;
     
-        const { largestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
+        const { largestNumber, smallestNumber } = this.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
     
-        const isSolutionPossible = ((bucketXModulus === 0) || (bucketYModulus === 0)) && largestNumber >= challengeData.amountWantedZ; 
+        let isSolutionPossible = ((bucketXModulus === 0) || (bucketYModulus === 0)) && largestNumber >= challengeData.amountWantedZ; 
+
+        isSolutionPossible = isSolutionPossible ? isSolutionPossible : 2 * (largestNumber - smallestNumber) === challengeData.amountWantedZ;
     
         return { isSolutionPossible };
       }

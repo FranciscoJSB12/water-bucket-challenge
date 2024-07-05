@@ -11,6 +11,14 @@ export class DataShipper {
 
     const { largestNumber, smallestNumber } = this.dataAnalyzer.detemineLargestSmallestNumbers(challengeData.bucketX, challengeData.bucketY);
 
+    if (largestNumber > challengeData.amountWantedZ && smallestNumber > challengeData.amountWantedZ) {
+      const results = this.bucketLooper.iterateForSpecialCase(smallestNumber, largestNumber, challengeData.amountWantedZ);
+
+      return {
+        result: results,
+      }
+    }
+
     const firstPosibleSolutionCount = challengeData.amountWantedZ !== smallestNumber ? (challengeData.amountWantedZ / smallestNumber) * 2 : 1;
 
     const secondPosibleSolutionCount = ((largestNumber - challengeData.amountWantedZ) / smallestNumber) * 2 || 1;

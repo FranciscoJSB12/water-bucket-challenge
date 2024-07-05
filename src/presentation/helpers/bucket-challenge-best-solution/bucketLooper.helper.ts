@@ -8,6 +8,70 @@ export class BucketLooper {
     public tranfFromLargestToSmallest = 'Transfer from largest to smallest';
     public emptySmallest = 'Empty smallest';
 
+    public iterateForSpecialCase(smallestNumber: number, largestNumber: number, amountWanted: number): BucketChallengeSolution[] {
+      let smallestBucketCount: number = 0;
+      let largestBucketCount: number = 0;
+      const results: BucketChallengeSolution[] = [];
+
+      while(largestBucketCount !== amountWanted) {
+
+        if (largestBucketCount === 0) {
+          largestBucketCount += largestNumber;
+          results.push({
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: this.fillLargest,
+          });
+          continue;
+        }
+
+        if (largestBucketCount === largestNumber && smallestBucketCount === 0) {
+          largestBucketCount -= smallestNumber;
+          smallestBucketCount += smallestNumber;
+          results.push({
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: this.tranfFromLargestToSmallest
+          });
+          continue;
+        }
+
+        if (smallestBucketCount === smallestNumber) {
+          smallestBucketCount = 0;
+          results.push({
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: this.emptySmallest
+          });
+          continue;
+        }
+
+        if (smallestBucketCount === 0 && largestBucketCount <= smallestNumber) {
+          smallestBucketCount += largestBucketCount;
+          largestBucketCount = 0;
+          results.push({
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: this.tranfFromLargestToSmallest
+          });
+          continue;
+        }
+
+        if (largestBucketCount === largestNumber && smallestBucketCount <= smallestNumber) {
+          const difference = (smallestNumber - smallestBucketCount);
+          largestBucketCount -= difference;
+          smallestBucketCount += difference;
+          results.push({
+            smallestBucketCount,
+            largestBucketCount,
+            explanation: this.tranfFromLargestToSmallest
+          });
+        }
+      }
+
+      return results;
+    }
+
     public startWithSmallestBucket(count: number, smallestNumber: number, largestNumber: number): BucketChallengeSolution[] {
 
         let smallestBucketCount: number = 0;

@@ -33,6 +33,16 @@ In order to solve the Water Bucket Challenge, the proccess was divided into the 
 
 - There is another important constraint: the largest bucket must be at least as large as the desired amount. You cannot achieve the goal if the two buckets have a smaller capacity than the final amount you want.
 
+- You can have two buckets larger than the amount wanted, therefore, you will be able to achieve the goal if it is possible to substract the difference between the buckets' capacities from the smallest one, and then the amount wanted should be the largest capacity minus this last result.
+
+```
+LargestCap - [SmallestCap - (LargestCap - SmallestCap)] = AmountWanted
+LargestCap - [SmallestCap - LargestCap + SmallestCap ] = AmountWanted
+LargestCap - SmallestCap + LargestCap - SmallestCap = AmountWanted
+2 * LargestCap - 2 * SmallestCap = AmountWanted
+2 * ( LargestCap - SmallestCap ) = AmountWanted
+```
+
 2. Analyze the possible solutions to choose most efficient one.
 
 - You can begin solving the challenge by using either the smallest or the largest bucket first. The optimal choice depends on the desired amount and the buckets' capacities. The question is: which approach will complete the challenge faster?
@@ -173,7 +183,7 @@ Besides the test cases in the `dataReceiver.helper.test.ts` file you can copy an
 ```
 
 ```
-  test('Fifth case with BucketX=1 BucketY=5 AmountWanted=5', () => {
+  test('Sixth case with BucketX=1 BucketY=5 AmountWanted=5', () => {
 
     const bucketX = 1;
     const bucketY = 5;
